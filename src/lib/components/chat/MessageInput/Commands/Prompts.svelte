@@ -42,10 +42,13 @@
 		let text = command.content;
 
 		if (command.content.includes('{{CLIPBOARD}}')) {
-			const clipboardText = await navigator.clipboard.readText().catch((err) => {
+			const clipboardText = navigator.clipboard ? await navigator.clipboard.readText().catch((err) => {
 				toast.error($i18n.t('Failed to read clipboard contents'));
 				return '{{CLIPBOARD}}';
-			});
+			}) : () => {
+				toast.error($i18n.t('Failed to read clipboard contents'));
+                                return '{{CLIPBOARD}}';
+                        }
 
 			const clipboardItems = await navigator.clipboard.read();
 
